@@ -22,7 +22,7 @@ def socket_connect():
         print(f"s.fileno(): {s.fileno()}")
     else:
         print(f"Socket Connect Error: {_error}")
-        exit(-1)
+        s = 0
     return s
 
 def receive_frame(s):
@@ -94,12 +94,17 @@ def main():
     print(f"SIZE OF TELEMETRY DATA: {calcsize('BIIiiifddHfffIIIIIIIIIIIIIIIIIIfhhhfffff')}")
     print("Please, check if the value SIZE OF TELEMETRY DATA on the cpp program is the same.")
     
-
-
     cv2.namedWindow('Python Window: Received Frame')
 
-    img_socket = socket_connect()
-    telemetry_socket = socket_connect()
+    while(!(img_socket = socket_connect())):
+        print("Trying to connnect to socket...\r")
+    print("img_socket connected!)
+    
+    while(!(telemetry_socket = socket_connect())):
+        print("Trying to connnect to socket...\r")
+    print("telemetry_socket connected!)
+
+
     while(1):
         frame = receive_frame(img_socket)
         #receive_frame_info(telemetry_socket)
